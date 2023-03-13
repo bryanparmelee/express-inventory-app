@@ -1,9 +1,5 @@
 #! /usr/bin/env node
 
-console.log(
-  'This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority"'
-);
-
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
 
@@ -26,299 +22,210 @@ const items = [];
 const categories = [];
 const brands = [];
 
-function itemCreate(name, description, brand, category, cb) {
+function brandCreate(name, website) {
+  const brand = new Brand({ name: name, website: website });
+
+  brands
+    .save()
+    .then(() => {
+      console.log("New Brand: " + brand);
+      brands.push(brand);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function categoryCreate(name, description) {
+  categorydetail = {
+    name: name,
+    description: description,
+  };
+
+  const category = new Category(categorydetail);
+  category
+    .save()
+    .then(() => {
+      console.log("New Category: " + category);
+      categories.push(category);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function itemCreate(name, description, brand, category, price, image) {
   itemdetail = {
     name: name,
     description: description,
     brand: brand,
     category: category,
+    price: price,
+    image: image,
   };
 
-  const item = new Author(authordetail);
+  if (category != false) itemdetail.category = category;
 
-  author.save(function (err) {
-    if (err) {
-      cb(err, null);
-      return;
-    }
-    console.log("New Author: " + author);
-    authors.push(author);
-    cb(null, author);
-  });
+  if (brand != false) itemdetail.brand = brand;
+
+  const item = new Item(itemdetail);
+
+  item
+    .save()
+    .then(() => {
+      console.log("New Item: " + item);
+      items.push(item);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
-function genreCreate(name, cb) {
-  const genre = new Genre({ name: name });
+function createCategoryBrands() {
+  async.series([
+    function () {
+      categoryCreate(
+        "Synths",
+        "Modular, semi-modular. Keyboards, controllers. Anything synth-related."
+      );
+    },
+    function () {
+      categoryCreate(
+        "Guitars",
+        "Acoustic or electric. Find all the six stringers here."
+      );
+    },
+    function () {
+      categoryCreate("Effects", "Echo, loopers, distortion, you name it.");
+    },
+    function () {
+      categoryCreate(
+        "Recording",
+        "Microphones. Outboard equipment. Consoles. Studio magic."
+      );
+    },
 
-  genre.save(function (err) {
-    if (err) {
-      cb(err, null);
-      return;
-    }
-    console.log("New Genre: " + genre);
-    genres.push(genre);
-    cb(null, genre);
-  });
+    function () {
+      brandCreate("Make Noise", "https://www.makenoisemusic.com/");
+    },
+    function () {
+      brandCreate("Pittsburgh Modular", "https://pittsburghmodular.com/");
+    },
+    function () {
+      brandCreate("Fender", "https://www.fender.com/");
+    },
+
+    function () {
+      brandCreate("Gibson", "https://www.gibson.com/");
+    },
+    function () {
+      brandCreate("Chase Bliss", "https://www.chasebliss.com/");
+    },
+    function () {
+      brandCreate("Earthquaker Devices", "https://www.earthquakerdevices.com/");
+    },
+    function () {
+      brandCreate("Solid State Logic", "https://www.solidstatelogic.com/");
+    },
+    function () {
+      brandCreate("API Audio", "https://www.apiaudio.com/");
+    },
+  ]);
 }
 
-function bookCreate(title, summary, isbn, author, genre, cb) {
-  bookdetail = {
-    title: title,
-    summary: summary,
-    author: author,
-    isbn: isbn,
-  };
-  if (genre != false) bookdetail.genre = genre;
-
-  const book = new Book(bookdetail);
-  book.save(function (err) {
-    if (err) {
-      cb(err, null);
-      return;
-    }
-    console.log("New Book: " + book);
-    books.push(book);
-    cb(null, book);
-  });
-}
-
-function bookInstanceCreate(book, imprint, due_back, status, cb) {
-  bookinstancedetail = {
-    book: book,
-    imprint: imprint,
-  };
-  if (due_back != false) bookinstancedetail.due_back = due_back;
-  if (status != false) bookinstancedetail.status = status;
-
-  const bookinstance = new BookInstance(bookinstancedetail);
-  bookinstance.save(function (err) {
-    if (err) {
-      console.log("ERROR CREATING BookInstance: " + bookinstance);
-      cb(err, null);
-      return;
-    }
-    console.log("New BookInstance: " + bookinstance);
-    bookinstances.push(bookinstance);
-    cb(null, book);
-  });
-}
-
-function createGenreAuthors(cb) {
-  async.series(
-    [
-      function (callback) {
-        authorCreate("Patrick", "Rothfuss", "1973-06-06", false, callback);
-      },
-      function (callback) {
-        authorCreate("Ben", "Bova", "1932-11-8", false, callback);
-      },
-      function (callback) {
-        authorCreate("Isaac", "Asimov", "1920-01-02", "1992-04-06", callback);
-      },
-      function (callback) {
-        authorCreate("Bob", "Billings", false, false, callback);
-      },
-      function (callback) {
-        authorCreate("Jim", "Jones", "1971-12-16", false, callback);
-      },
-      function (callback) {
-        genreCreate("Fantasy", callback);
-      },
-      function (callback) {
-        genreCreate("Science Fiction", callback);
-      },
-      function (callback) {
-        genreCreate("French Poetry", callback);
-      },
-    ],
-    // optional callback
-    cb
-  );
-}
-
-function createBooks(cb) {
-  async.parallel(
-    [
-      function (callback) {
-        bookCreate(
-          "The Name of the Wind (The Kingkiller Chronicle, #1)",
-          "I have stolen princesses back from sleeping barrow kings. I burned down the town of Trebon. I have spent the night with Felurian and left with both my sanity and my life. I was expelled from the University at a younger age than most people are allowed in. I tread paths by moonlight that others fear to speak of during day. I have talked to Gods, loved women, and written songs that make the minstrels weep.",
-          "9781473211896",
-          authors[0],
-          [genres[0]],
-          callback
-        );
-      },
-      function (callback) {
-        bookCreate(
-          "The Wise Man's Fear (The Kingkiller Chronicle, #2)",
-          "Picking up the tale of Kvothe Kingkiller once again, we follow him into exile, into political intrigue, courtship, adventure, love and magic... and further along the path that has turned Kvothe, the mightiest magician of his age, a legend in his own time, into Kote, the unassuming pub landlord.",
-          "9788401352836",
-          authors[0],
-          [genres[0]],
-          callback
-        );
-      },
-      function (callback) {
-        bookCreate(
-          "The Slow Regard of Silent Things (Kingkiller Chronicle)",
-          "Deep below the University, there is a dark place. Few people know of it: a broken web of ancient passageways and abandoned rooms. A young woman lives there, tucked among the sprawling tunnels of the Underthing, snug in the heart of this forgotten place.",
-          "9780756411336",
-          authors[0],
-          [genres[0]],
-          callback
-        );
-      },
-      function (callback) {
-        bookCreate(
-          "Apes and Angels",
-          "Humankind headed out to the stars not for conquest, nor exploration, nor even for curiosity. Humans went to the stars in a desperate crusade to save intelligent life wherever they found it. A wave of death is spreading through the Milky Way galaxy, an expanding sphere of lethal gamma ...",
-          "9780765379528",
-          authors[1],
-          [genres[1]],
-          callback
-        );
-      },
-      function (callback) {
-        bookCreate(
-          "Death Wave",
-          "In Ben Bova's previous novel New Earth, Jordan Kell led the first human mission beyond the solar system. They discovered the ruins of an ancient alien civilization. But one alien AI survived, and it revealed to Jordan Kell that an explosion in the black hole at the heart of the Milky Way galaxy has created a wave of deadly radiation, expanding out from the core toward Earth. Unless the human race acts to save itself, all life on Earth will be wiped out...",
-          "9780765379504",
-          authors[1],
-          [genres[1]],
-          callback
-        );
-      },
-      function (callback) {
-        bookCreate(
-          "Test Book 1",
-          "Summary of test book 1",
-          "ISBN111111",
-          authors[4],
-          [genres[0], genres[1]],
-          callback
-        );
-      },
-      function (callback) {
-        bookCreate(
-          "Test Book 2",
-          "Summary of test book 2",
-          "ISBN222222",
-          authors[4],
-          false,
-          callback
-        );
-      },
-    ],
-    // optional callback
-    cb
-  );
-}
-
-function createBookInstances(cb) {
-  async.parallel(
-    [
-      function (callback) {
-        bookInstanceCreate(
-          books[0],
-          "London Gollancz, 2014.",
-          false,
-          "Available",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[1],
-          " Gollancz, 2011.",
-          false,
-          "Loaned",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[2],
-          " Gollancz, 2015.",
-          false,
-          false,
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[3],
-          "New York Tom Doherty Associates, 2016.",
-          false,
-          "Available",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[3],
-          "New York Tom Doherty Associates, 2016.",
-          false,
-          "Available",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[3],
-          "New York Tom Doherty Associates, 2016.",
-          false,
-          "Available",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[4],
-          "New York, NY Tom Doherty Associates, LLC, 2015.",
-          false,
-          "Available",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[4],
-          "New York, NY Tom Doherty Associates, LLC, 2015.",
-          false,
-          "Maintenance",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(
-          books[4],
-          "New York, NY Tom Doherty Associates, LLC, 2015.",
-          false,
-          "Loaned",
-          callback
-        );
-      },
-      function (callback) {
-        bookInstanceCreate(books[0], "Imprint XXX2", false, false, callback);
-      },
-      function (callback) {
-        bookInstanceCreate(books[1], "Imprint XXX3", false, false, callback);
-      },
-    ],
-    // Optional callback
-    cb
-  );
+function createItems() {
+  async.parallel([
+    function () {
+      itemCreate(
+        "MATHS",
+        "The MATHS music synthesizer module is an analog computer designed for musical purposes.",
+        brands[0],
+        categories[0],
+        "290.00",
+        "https://www.makenoisemusic.com/thumbs/modules/maths/mts2-white-dec13-1883x2388.png"
+      );
+    },
+    function () {
+      itemCreate(
+        "Taiga",
+        "Taiga is a complete, modern, modular instrument that allows us to explore beyond the boundaries of a traditional analog synthesizer.",
+        brands[1],
+        categories[0],
+        "799.99",
+        "https://images.squarespace-cdn.com/content/v1/56aeb9254d088e3be58a3d47/759b5cb0-e410-40e9-bc99-ab8827e322c8/Taiga+Face+Front+Black+Clean.jpg?format=2500w"
+      );
+    },
+    function () {
+      itemCreate(
+        "1962 Fender Jaguar",
+        "First year of Jaguar production. Alder body, Maple neck with veneer Rosewood fingerboard",
+        brands[2],
+        categories[1],
+        "6500.00",
+        "https://images.reverb.com/image/upload/s--JoJnyd0w--/a_0/f_auto,t_supersize/v1675369686/nbksmpamjplmhelderfy.jpg"
+      );
+    },
+    function () {
+      itemCreate(
+        "1966 Gibson Hummingbird",
+        "With a full complement of ornate cosmetic details, the Gibson Hummingbird was Gibson's second most expensive production acoustic when it premiered in 1960.",
+        brands[3],
+        categories[1],
+        "6995.00",
+        "https://images.reverb.com/image/upload/s--P8OOVYHr--/f_auto,t_supersize/v1677526208/fhtywl7ifhigltszilgb.jpg"
+      );
+    },
+    function () {
+      itemCreate(
+        "Blooper",
+        "The dream of blooper was to merge high-fidelity looping with creative manipulation, allowing you to steer recordings to new and extraordinary places. ",
+        brands[4],
+        categories[3],
+        "499.00",
+        "https://images.squarespace-cdn.com/content/v1/622176a9b8d15d57ffbf5700/699c5aa7-9de2-4461-9fa1-96f7b8dc8733/Blooper_Pedal_Chase+Bliss_2023.jpg?format=1500w"
+      );
+    },
+    function () {
+      itemCreate(
+        "Arpanoid",
+        "The Arpanoid takes whatever you play and transforms it into an adjustable ascending or descending scale.",
+        brands[5],
+        categories[3],
+        "249.00",
+        "https://images.squarespace-cdn.com/content/v1/57cebe2c03596e075fca5f24/1548953571222-KSS5T3MGPE4GR3MJ8PRZ/Arpanoid-Main.jpg?format=1000w"
+      );
+    },
+    function () {
+      itemCreate(
+        "Fusion",
+        "Fusion is an all-analogue 2U stereo outboard processor created for the modern hybrid studio.",
+        brands[6],
+        categories[4],
+        "2199.99",
+        "https://www.solidstatelogic.com/assets/components/phpthumbof/cache/SSL%20Fusion_Front_Colours.a2b6f1494209e96452dcb4b271c89f2b.jpg"
+      );
+    },
+    function () {
+      itemCreate(
+        "2500+ Stereo Bus Compressor",
+        "The API 2500+ Stereo Bus Compressor allows adjustment of sonic qualities to alter the punch and tone of the stereo mix.",
+        brands[7],
+        categories[4],
+        "3295.00",
+        "https://www.apiaudio.com/img2x/products/prod_2500PLUS_1_m.jpg"
+      );
+    },
+  ]);
 }
 
 async.series(
-  [createGenreAuthors, createBooks, createBookInstances],
+  [createCategoryBrands, createItems],
   // Optional callback
   function (err, results) {
     if (err) {
       console.log("FINAL ERR: " + err);
     } else {
-      console.log("BOOKInstances: " + bookinstances);
+      console.log("Items: " + items);
     }
     // All done, disconnect from database
     mongoose.connection.close();
