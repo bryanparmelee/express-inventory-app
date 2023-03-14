@@ -1,7 +1,30 @@
 doctype html
-html
+html (lang='en')
   head
-    title= title
+    title= Gear Wishlist
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div(class='body-container')
+      div(class='sidebar')
+        ul(class='sidebar-nav')
+          li
+            a(href='/catalog') Home
+          li
+            a(href='/catalog/items') All gear
+          li
+            a(href='/catalog/catagories') All categories
+          li
+            a(href='/catalog/brands') All brands 
+          li  
+            hr
+          li 
+            a(href='/catalog/item/create') Add gear
+          li 
+            a(href='/catalog/category/create') Add category
+          li 
+            a(href='/catalog/brand/create') Add brand
+            
+      div(class='main-container')
+        block content
