@@ -5,7 +5,15 @@ exports.index = (req, res, body) => {
 };
 
 exports.item_list = (req, res, next) => {
-  res.send("Item list");
+  Item.find({}, "name brand")
+    .sort({ name: 1 })
+    .populate("brand")
+    .exec(function (err, list_items) {
+      if (err) {
+        return next(err);
+      }
+      res.render("item_list", { title: "Item List", item_list: list_items });
+    });
 };
 
 exports.item_details = (req, res, next) => {
