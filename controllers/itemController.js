@@ -1,7 +1,30 @@
 const Item = require("../models/item");
+const Brand = require("../models/brand");
+const Category = require("../models/category");
+
+const async = require("async");
 
 exports.index = (req, res, body) => {
-  res.send("Home page");
+  async.parallel(
+    {
+      item_count(callback) {
+        Item.countDocuments({}, callback);
+      },
+      brand_count(callback) {
+        Brand.countDocuments({}, callback);
+      },
+      category_count(callback) {
+        Category.countDocuments({}, callback);
+      },
+    },
+    (err, results) => {
+      res.render("index", {
+        title: "Gear Wishlist Home",
+        error: err,
+        data: results,
+      });
+    }
+  );
 };
 
 exports.item_list = (req, res, next) => {
