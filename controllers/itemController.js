@@ -7,14 +7,14 @@ const async = require("async");
 exports.index = (req, res, body) => {
   async.parallel(
     {
-      item_count(callback) {
-        Item.countDocuments({}, callback);
+      item_count() {
+        Item.countDocuments({});
       },
-      brand_count(callback) {
-        Brand.countDocuments({}, callback);
+      brand_count() {
+        Brand.countDocuments({});
       },
-      category_count(callback) {
-        Category.countDocuments({}, callback);
+      category_count() {
+        Category.countDocuments({});
       },
     },
     (err, results) => {
