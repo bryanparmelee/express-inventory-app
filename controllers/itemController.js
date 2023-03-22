@@ -4,17 +4,17 @@ const Category = require("../models/category");
 
 const async = require("async");
 
-exports.index = (req, res, body) => {
+exports.index = (req, res, next) => {
   async.parallel(
     {
-      item_count() {
-        Item.countDocuments({});
+      item_count(callback) {
+        Item.countDocuments({}, callback);
       },
-      brand_count() {
-        Brand.countDocuments({});
+      brand_count(callback) {
+        Brand.countDocuments({}, callback);
       },
-      category_count() {
-        Category.countDocuments({});
+      category_count(callback) {
+        Category.countDocuments({}, callback);
       },
     },
     (err, results) => {
