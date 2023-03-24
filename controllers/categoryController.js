@@ -1,7 +1,17 @@
 const Category = require("../models/category");
 
 exports.cateogry_list = (req, res, next) => {
-  res.send("Category list");
+  Category.find()
+    .sort([["name", "ascending"]])
+    .exec(function (err, list_categories) {
+      if (err) {
+        return next(err);
+      }
+      res.render("category_list", {
+        title: "Categories",
+        category_list: list_categories,
+      });
+    });
 };
 
 exports.category_detail = (req, res, next) => {
