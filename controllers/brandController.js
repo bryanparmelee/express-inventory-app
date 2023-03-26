@@ -1,7 +1,17 @@
 const Brand = require("../models/brand");
 
 exports.brand_list = (req, res, next) => {
-  res.send("Brand list, not implemented.");
+  Brand.find()
+    .sort([["name", "ascending"]])
+    .exec(function (err, list_brands) {
+      if (err) {
+        return next(err);
+      }
+      res.render("brand_list", {
+        title: "Brands",
+        brand_list: list_brands,
+      });
+    });
 };
 
 exports.brand_detail = (req, res, next) => {
