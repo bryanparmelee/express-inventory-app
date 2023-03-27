@@ -1,6 +1,9 @@
 const Category = require("../models/category");
+const Item = require("../models/item");
 
-exports.cateogry_list = (req, res, next) => {
+const async = require("async");
+
+exports.category_list = (req, res, next) => {
   Category.find()
     .sort([["name", "ascending"]])
     .exec(function (err, list_categories) {
@@ -15,7 +18,32 @@ exports.cateogry_list = (req, res, next) => {
 };
 
 exports.category_detail = (req, res, next) => {
-  res.send(`Category detail ${req.params.id}`);
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback);
+      },
+      category_items(callback) {
+        Item.find({ category: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.category == null) {
+        const err = new Error("Category not found");
+        err.status = 404;
+        return next(err);
+      }
+      res.render("category_detail"),
+        {
+          title: "Category Detail",
+          category: results.category,
+          category_items: results.category_items,
+        };
+    }
+  );
 };
 
 exports.category_create_get = (req, res, next) => {

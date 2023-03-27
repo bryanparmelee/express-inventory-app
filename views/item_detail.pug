@@ -1,0 +1,10 @@
+extends layout 
+
+block content 
+    h1 #{item.name}
+
+    p #[strong Brand:] #{item.brand.name}
+    p #[strong Price:] #{item.price}
+    p #[strong Description:] #{item.description}
+    p #[strong Category:] #{item.category.name}
+    p #[strong Image:] #{item.image}

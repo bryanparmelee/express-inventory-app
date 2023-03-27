@@ -40,7 +40,30 @@ exports.item_list = (req, res, next) => {
 };
 
 exports.item_details = (req, res, next) => {
-  res.send(`Item details ${req.params.id}`);
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.params.id)
+          .populate("category")
+          .populate("brand")
+          .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.item == null) {
+        const err = new Error("Item not found");
+        err.status = 404;
+        return next(err);
+      }
+      res.render("item_detail", {
+        title: "Item Detail",
+        item: results.item,
+      });
+    }
+  );
 };
 
 exports.item_create_get = (req, res, next) => {
