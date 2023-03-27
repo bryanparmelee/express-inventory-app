@@ -1,4 +1,7 @@
 const Brand = require("../models/brand");
+const Item = require("../models/item");
+
+const async = require("async");
 
 exports.brand_list = (req, res, next) => {
   Brand.find()
@@ -15,7 +18,32 @@ exports.brand_list = (req, res, next) => {
 };
 
 exports.brand_detail = (req, res, next) => {
-  res.send(`Brand details ${req.params.id}`);
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback);
+      },
+      brand_items(callback) {
+        Item.find({ brand: req.params.id }, "name").exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (results.brand == null) {
+        const err = new Error("Brand not found");
+        err.status = 404;
+        return next(err);
+      }
+      res.render("brand_detail", {
+        title: "Brand Detail",
+        brand: results.brand,
+        brand_items: results.brand_items,
+      });
+    }
+  );
 };
 
 exports.brand_create_get = (req, res, next) => {

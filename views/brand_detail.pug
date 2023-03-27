@@ -1,0 +1,17 @@
+extends layout 
+
+block content   
+    h1 Brand: #{brand.name}
+    p #{brand.website}
+
+    div(style='margin-left:20px;margin-top:20px')
+
+        h4 Items 
+
+        dl 
+            each item in brand_items 
+                dt 
+                    a(href=item.url) #{item.name}
+
+            else 
+                p This brand has no items.
