@@ -2,7 +2,7 @@ extends layout
 
 block content   
     h1 Brand: #{brand.name}
-    p #{brand.website}
+    a(href=brand.website) #{brand.website}
 
     div(style='margin-left:20px;margin-top:20px')
 
