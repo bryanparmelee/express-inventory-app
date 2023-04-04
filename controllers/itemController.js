@@ -2,6 +2,8 @@ const Item = require("../models/item");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
 
+const { body, validationResult } = require("express-validator");
+
 const async = require("async");
 
 exports.index = (req, res, next) => {
@@ -67,12 +69,98 @@ exports.item_details = (req, res, next) => {
 };
 
 exports.item_create_get = (req, res, next) => {
-  res.send("Item create-get");
+  async.parallel(
+    {
+      brands(callback) {
+        Brand.find(callback);
+      },
+      categories(callback) {
+        Category.find(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      res.render("item_form", {
+        title: "Create Item",
+        brands: results.brands,
+        categories: results.categories,
+      });
+    }
+  );
 };
 
-exports.item_create_post = (req, res, next) => {
-  res.send("Item create-post");
-};
+exports.item_create_post = [
+  (req, res, next) => {
+    if (!Array.isArray(req.body.category)) {
+      req.body.category =
+        typeof req.body.category === "undefined" ? [] : [req.body.category];
+    }
+    next();
+  },
+  body("name", "Item name is required.").trim().isLength({ min: 1 }).escape(),
+  body("description", "Item description is required.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("brand", "Brand name is required.").trim().isLength({ min: 1 }).escape(),
+  body("category.*").escape(),
+  body("price", "Item price required.").trim().isLength({ min: 1 }),
+  body("image").trim().isURL(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      brand: req.body.brand,
+      category: req.body.category,
+      price: req.body.price,
+      image: req.body.image,
+    });
+
+    if (!errors.isEmpty()) {
+      async.parallel(
+        {
+          brands(callback) {
+            Brand.find(callback);
+          },
+          categories(callback) {
+            Category.find(callback);
+          },
+        },
+        (err, results) => {
+          if (err) {
+            return next(err);
+          }
+
+          for (const category of results.categories) {
+            if (item.category.includes(category._id)) {
+              category.checked = "true";
+            }
+          }
+          res.render("item_form", {
+            title: "Create Item",
+            brands: results.brands,
+            categories: results.categories,
+            item,
+            errors: errors.array(),
+          });
+        }
+      );
+      return;
+    }
+
+    item.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(item.url);
+    });
+  },
+];
 
 exports.item_delete_get = (req, res, next) => {
   res.send("Item delete-get");
