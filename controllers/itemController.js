@@ -169,10 +169,116 @@ exports.item_delete_get = (req, res, next) => {
 exports.item_delete_post = (req, res, next) => {
   res.send("Item delete-post");
 };
+
 exports.item_update_get = (req, res, next) => {
-  res.send("Item update-get");
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.params.id)
+          .populate("brand")
+          .populate("category")
+          .exec(callback);
+      },
+      brands(callback) {
+        Brand.find(callback);
+      },
+      categories(callback) {
+        Category.find(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.item == null) {
+        const err = new Error("Item not found");
+        err.status = 404;
+        return next(err);
+      }
+      for (const category of results.categories) {
+        for (const itemCategory of results.item.category) {
+          if (category._id.toString() === itemCategory._id.toString()) {
+            category.checked = "true";
+          }
+        }
+      }
+      res.render("item_form", {
+        title: "Update Item",
+        brands: results.brands,
+        categories: results.categories,
+        item: results.item,
+      });
+    }
+  );
 };
 
-exports.item_update_post = (req, res, next) => {
-  res.send("Item update-post");
-};
+exports.item_update_post = [
+  (req, res, next) => {
+    if (!Array.isArray(req.body.category)) {
+      req.body.category =
+        typeof req.body.category === "undefined" ? [] : [req.body.category];
+    }
+    next();
+  },
+  body("name", "Item name is required.").trim().isLength({ min: 1 }).escape(),
+  body("description", "Item description is required.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("brand", "Brand name is required.").trim().isLength({ min: 1 }).escape(),
+  body("category.*").escape(),
+  body("price", "Item price required.").trim().isLength({ min: 1 }),
+  body("image").trim().isURL(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      brand: req.body.brand,
+      category:
+        typeof req.body.category === "undefined" ? [] : req.body.category,
+      price: req.body.price,
+      image: req.body.image,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      async.parallel(
+        {
+          brand(callback) {
+            Brand.find(callback);
+          },
+          categories(callback) {
+            Category.find(callback);
+          },
+        },
+        (err, results) => {
+          if (err) {
+            return next(err);
+          }
+          for (const category of results.categories) {
+            if (item.category.includes(category._id)) {
+              category.checked = "true";
+            }
+          }
+          res.render("item_form", {
+            title: "Update Item",
+            brand: results.brand,
+            categories: results.categories,
+            item,
+            errors: errors.array(),
+          });
+        }
+      );
+      return;
+    }
+
+    Item.findByIdAndUpdate(req.params.id, item, {}, (err, theitem) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(theitem.url);
+    });
+  },
+];
