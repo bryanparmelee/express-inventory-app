@@ -94,11 +94,61 @@ exports.brand_create_post = [
 ];
 
 exports.brand_delete_get = (req, res, next) => {
-  res.send("Brand delete-get");
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback);
+      },
+      brand_items(callback) {
+        Item.find({ brand: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.brand == null) {
+        res.redirect("/catalog/brands");
+      }
+      res.render("brand_delete", {
+        title: "Delete Brand",
+        brand: results.brand,
+        brand_items: results.brand_items,
+      });
+    }
+  );
 };
 
-exports.brand_delete_post = (req, res, nest) => {
-  res.send("Brand delete-post");
+exports.brand_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.body.brandid).exec(callback);
+      },
+      brand_items(callback) {
+        Item.find({ brand: req.body.brandid }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.brand_items.length > 0) {
+        res.render("brand_delete", {
+          title: "Delete Brand",
+          brand: results.brand,
+          brand_items: results.brand_items,
+        });
+        return;
+      }
+      Brand.findByIdAndRemove(req.body.brandid, (err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/catalog/brands");
+      });
+    }
+  );
 };
 
 exports.brand_update_get = (req, res, next) => {
