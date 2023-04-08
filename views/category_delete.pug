@@ -1,0 +1,27 @@
+extends layout 
+block content 
+    h1 #{title}: #{category.name}
+
+    if category_items.length 
+
+        p #[strong This category is being used by the following gear:]
+
+        div(style='margin-left:20px;margin-top:20px')
+
+            h4 Gear 
+
+            dl 
+            each item in category_items 
+                dt 
+                    a(href=item.url) #{item.name}
+
+        p #[em Please delete the item or change its category.]
+
+    else 
+        p Do you really want to delete this category?
+
+        form(method='POST' action='')
+            div.form-group
+                input#categoryid.form-control(type='hidden' name='categoryid',required='true', value=category._id )
+
+            button.btn.btn-primary(type='submit') Delete 

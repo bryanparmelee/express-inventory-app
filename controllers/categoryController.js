@@ -26,7 +26,7 @@ exports.category_detail = (req, res, next) => {
         Category.findById(req.params.id).exec(callback);
       },
       category_items(callback) {
-        Item.find({ category: req.params.id }).exec(callback);
+        Item.find({ category: req.params.id }, "name").exec(callback);
       },
     },
     (err, results) => {
@@ -38,12 +38,11 @@ exports.category_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
-      res.render("category_detail"),
-        {
-          title: "Category Detail",
-          category: results.category,
-          category_items: results.category_items,
-        };
+      res.render("category_detail", {
+        title: "Category Detail",
+        category: results.category,
+        category_items: results.category_items,
+      });
     }
   );
 };
@@ -94,11 +93,61 @@ exports.category_create_post = [
 ];
 
 exports.category_delete_get = (req, res, next) => {
-  res.send("Catogory delete-get");
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback);
+      },
+      category_items(callback) {
+        Item.find({ category: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.category == null) {
+        res.redirect("/catalog/categories");
+      }
+      res.render("category_delete", {
+        title: "Delete Cateogory",
+        category: results.category,
+        category_items: results.category_items,
+      });
+    }
+  );
 };
 
 exports.category_delete_post = (req, res, next) => {
-  res.send("Category delete-post");
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.body.categoryid).exec(callback);
+      },
+      category_items(callback) {
+        Item.find({ cateogry: req.body.categoryid }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.category.length > 0) {
+        res.render("category_delete", {
+          title: "Delete Category",
+          category: results.category,
+          category_items: results.category_items,
+        });
+        return;
+      }
+      Category.findByIdAndRemove(req.body.categoryid, (err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/catalog/categories");
+      });
+    }
+  );
 };
 
 exports.category_update_get = (req, res, next) => {

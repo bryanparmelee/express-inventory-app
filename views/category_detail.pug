@@ -2,17 +2,20 @@ extends layout
 
 block content 
 
-    h1 Category: #{category}
+    h1 Category: #{category.name}
 
     div(style='margin-left:20px;margin-top:20px')
 
-        h4 Items 
+           h4 Items 
+ 
+            dl 
+                each item in category_items 
+                    dt 
+                        a(href=item.url) #{item.name}
 
-        dl
-            each item in category_items
-                dt
-                    a(href=item.url) #{item.name}
-                dd #{item.description}
+                else 
+                    p This category has no items.
 
-            else    
-                p No item found
+    hr
+    p 
+        a(href=category.url+'/delete') Delete category
