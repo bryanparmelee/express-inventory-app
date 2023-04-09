@@ -110,7 +110,7 @@ exports.category_delete_get = (req, res, next) => {
         res.redirect("/catalog/categories");
       }
       res.render("category_delete", {
-        title: "Delete Cateogory",
+        title: "Delete Category",
         category: results.category,
         category_items: results.category_items,
       });

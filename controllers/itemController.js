@@ -163,11 +163,49 @@ exports.item_create_post = [
 ];
 
 exports.item_delete_get = (req, res, next) => {
-  res.send("Item delete-get");
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.params.id)
+          .populate("brand")
+          .populate("category")
+          .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.item == null) {
+        res.redirect("/catalog/items");
+      }
+      res.render("item_delete", {
+        title: "Delete Item",
+        item: results.item,
+      });
+    }
+  );
 };
 
 exports.item_delete_post = (req, res, next) => {
-  res.send("Item delete-post");
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.body.itemid).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      Item.findByIdAndRemove(req.body.itemid, (err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/catalog/items");
+      });
+    }
+  );
 };
 
 exports.item_update_get = (req, res, next) => {
