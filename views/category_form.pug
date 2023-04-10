@@ -10,8 +10,12 @@ block content
             label(for='description') Description: 
             textarea#description.form-control(name='description', rows=5, placeholder='Enter category description' ) #{undefined===category ? '' : category.description}
         button.btn.btn-primary(type='submit') Submit 
+    if category === undefined 
+          p 
+            a(href='../categories') Cancel  
+    if category !== undefined 
         p 
-            a(href=category.url) Cancel
+            a(href=category.url) Cancel  
     if errors 
         ul  
             for error in errors 

@@ -34,6 +34,12 @@ block content
             input#image.form-control(type='text', placeholder='Enter image URL', name='image' value=(undefined===item ? '' : item.image) )
         button.btn.btn-primary(type='submit') Submit
     
+    if item === undefined 
+        p 
+            a(href='../items') Cancel
+    if item !== undefined 
+        p 
+            a(href=item.url) Cancel
     if errors
         ul 
             for error in errors

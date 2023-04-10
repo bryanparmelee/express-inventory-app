@@ -9,7 +9,13 @@ block content
             input#brand-name.form-control(type='text' placeholder='Brand name',name='brand_name' value=(undefined===brand ? '' : brand.name))
             label(for='brand_url') Website: 
             input#brand-url.form-control(type='text' placeholder='Brand website',name='brand_url' value=(undefined===brand ? '' : brand.website))
-        button.btn.btn-primary(type='submit') Submit    
+        button.btn.btn-primary(type='submit') Submit
+    if brand === undefined 
+        p 
+            a(href='../brands') Cancel
+    if  brand !== undefined 
+        p 
+            a(href=brand.url) Cancel  
     if errors
         ul 
             for error in errors
