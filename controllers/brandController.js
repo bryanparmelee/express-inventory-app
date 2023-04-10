@@ -152,9 +152,50 @@ exports.brand_delete_post = (req, res, next) => {
 };
 
 exports.brand_update_get = (req, res, next) => {
-  res.send("Brand update-get");
+  Brand.findById(req.params.id, (err, brand) => {
+    if (err) {
+      return next(err);
+    }
+    if (brand == null) {
+      const err = new Error("Brand not found");
+      err.status = 404;
+      return next(err);
+    }
+    res.render("brand_form", {
+      title: "Update Brand",
+      brand: brand,
+    });
+  });
 };
 
-exports.brand_update_post = (req, res, next) => {
-  res.send("Brand update-post");
-};
+exports.brand_update_post = [
+  body("brand_name", "Brand name required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("brand_url", "Website required").trim().isURL(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    const brand = new Brand({
+      name: req.body.brand_name,
+      website: req.body.brand_url,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("brand_form", {
+        title: "Create Brand",
+        brand: brand,
+        errors: errors.array(),
+      });
+      return;
+    }
+    Brand.findByIdAndUpdate(req.params.id, brand, {}, (err, thebrand) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(thebrand.url);
+    });
+  },
+];
