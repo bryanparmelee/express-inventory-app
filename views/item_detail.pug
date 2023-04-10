@@ -7,7 +7,9 @@ block content
         a(href=item.brand.website target='blank') #{item.brand.name}
     p #[strong Price:] #{item.price}
     p #[strong Description:] #{item.description}
-    p #[strong Category:] #{item.category}
+    p #[strong Category:] 
+        each val in item.category 
+            a(href=val.url) #{val.name}
     p #[strong Image:] #{item.image}
 
     hr
