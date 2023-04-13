@@ -3,14 +3,15 @@ extends layout
 block content 
     h1 #{item.name}
 
+    img(src=item.image alt='item.name')
+
     p #[strong Brand:] 
         a(href=item.brand.website target='blank') #{item.brand.name}
-    p #[strong Price:] #{item.price}
-    p #[strong Description:] #{item.description}
+    p #[strong Price:] $#{item.price}
+    p.description #[strong Description:] #{item.description}
     p #[strong Category:] 
         each val in item.category 
             a(href=val.url) #{val.name}
-    p #[strong Image:] #{item.image}
 
     hr
     p 

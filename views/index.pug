@@ -2,14 +2,13 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}, an express site to keep track of some of the gear of my dreams. 
-
-  h1 Dynamic content
+  img(src='./images/hero-studio.jpg' alt='Recording studio')
+  p.description Welcome to #{title}, an express CRUD app to keep track of some of the musical gear that I dream of owning some day. 
 
   if error 
-    p Error getting dynamic content.
+    p Error gathering gear.
   else  
-    p Here are the counts.
+    h4 The list currently contains:
 
   ul  
     li #[strong Items:] !{data.item_count}

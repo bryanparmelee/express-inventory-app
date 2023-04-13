@@ -1,8 +1,109 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-a {
-  color: #00B7FF;
+:root {
+  --main-bg-gradient: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+}
+
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: var(--main-bg-gradient);
+  color: white;
+  height: 100vh;
+}
+
+h1 {
+  margin-bottom: 12px;
+}
+
+img {
+  max-width: 400px;
+}
+
+.body-container {
+  width: 100vw;
+  padding: 10px;
+  display: flex;
+  border: 1px solid red;
+}
+
+.sidebar {
+  width: 160px;
+  border: 1px solid blue;
+}
+
+.sidebar-nav > li {
+  margin-top: 6px;
+  list-style-type: none;
+}
+
+.sidebar-nav > li > a {
+  text-decoration: none;
+  color: white;
+}
+
+.main-container {
+  border: 1px solid green;
+  width: 100%;
+  padding: 0px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.description {
+  max-width: 400px;
+}
+
+.form-container {
+  border: 1px solid purple;
+  padding: 4px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-with-link {
+  display: flex;
+  justify-content: space-between;
+  /* margin-bottom: 4px; */
+}
+
+.form-control {
+  padding: 4px;
+  margin-top: 4px;
+}
+
+.checkbox-input {
+  margin-top: 4px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn {
+  width: 80px;
+  border-radius: 10px;
+  background-color: aquamarine;
+}
+
+a.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
