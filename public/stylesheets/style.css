@@ -7,18 +7,21 @@
 }
 
 :root {
-  --main-bg-gradient: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+  --main-bg: #ffffff;
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: var(--main-bg-gradient);
-  color: white;
+  font-family: "Inter", sans-serif;
+  background: var(--main-bg);
+  color: black;
   height: 100vh;
 }
 
 h1 {
   margin-bottom: 12px;
+  font-weight: 800;
+  font-size: 4rem;
+  text-align: center;
 }
 
 img {
@@ -44,7 +47,7 @@ img {
 
 .sidebar-nav > li > a {
   text-decoration: none;
-  color: white;
+  color: black;
 }
 
 .main-container {
@@ -55,6 +58,21 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.home-container {
+  border: 1px solid purple;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .description {

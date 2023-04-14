@@ -1,17 +1,15 @@
 extends layout
 
 block content
-  h1= title
-  img(src='./images/hero-studio.jpg' alt='Recording studio')
-  p.description Welcome to #{title}, an express CRUD app to keep track of some of the musical gear that I dream of owning some day. 
+  div.home-container
+    img(src='/images/gear-hero.jpg' alt='Recording studio')
 
-  if error 
-    p Error gathering gear.
-  else  
-    h4 The list currently contains:
+    div.hero
+      h1= title
+      p.description Welcome to #{title}, a Node.js CRUD app to help keep track of some of the musical gear that I dream of owning some day. 
 
-  ul  
-    li #[strong Items:] !{data.item_count}
-    li #[strong Brands:] !{data.brand_count}
-    li #[strong Categories]: !{data.category_count}
+      if error 
+        p No gear found.
+      else  
+        p The list currently contains !{data.item_count} items and !{data.brand_count} brands.
 

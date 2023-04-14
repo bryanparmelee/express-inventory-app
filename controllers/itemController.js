@@ -21,7 +21,7 @@ exports.index = (req, res, next) => {
     },
     (err, results) => {
       res.render("index", {
-        title: "Gear Wishlist Home",
+        title: "Welcome to my Gear Wishlist.",
         error: err,
         data: results,
       });
