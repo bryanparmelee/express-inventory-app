@@ -30,9 +30,10 @@ exports.index = (req, res, next) => {
 };
 
 exports.item_list = (req, res, next) => {
-  Item.find({}, "name brand")
+  Item.find({}, "name brand image")
     .sort({ name: 1 })
     .populate("brand")
+    .populate("image")
     .exec(function (err, list_items) {
       if (err) {
         return next(err);

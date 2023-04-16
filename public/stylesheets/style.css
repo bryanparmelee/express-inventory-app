@@ -114,14 +114,40 @@ img {
 }
 
 .btn {
-  width: 80px;
-  border-radius: 10px;
+  min-width: 140px;
+  border-radius: 20px;
   background-color: aquamarine;
 }
 
 a.btn {
+  padding: 8px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  color: black;
+}
+
+.item-container {
+  width: 400px;
+  padding: 4px 40px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+
+  border-radius: 40px;
+}
+
+.item-container:hover {
+  background-color: gray;
+}
+
+.item-container > img {
+  width: 60px;
+  height: 60px;
+  background-position: center;
+  object-fit: cover;
 }
