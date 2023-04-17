@@ -26,7 +26,7 @@ exports.brand_detail = (req, res, next) => {
         Brand.findById(req.params.id).exec(callback);
       },
       brand_items(callback) {
-        Item.find({ brand: req.params.id }, "name").exec(callback);
+        Item.find({ brand: req.params.id }, "name image").exec(callback);
       },
     },
     (err, results) => {

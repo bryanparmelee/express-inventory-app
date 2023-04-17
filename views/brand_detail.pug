@@ -1,23 +1,21 @@
 extends layout 
 
 block content   
-    h1 Brand: #{brand.name}
-    a(href=brand.website target='blank') #{brand.website}
+    a(href=brand.website target='blank')
+        h1 #{brand.name}
+    h4 Items:
+    div.items-container
+       
+        each item in brand_items 
+            a.item-container(href=item.url)
+                img(src=item.image alt=item.name) 
+                p #{item.name}
 
-    div(style='margin-left:20px;margin-top:20px')
+        else 
+            p This brand has no items.
 
-        h4 Items 
-
-        dl 
-            each item in brand_items 
-                dt 
-                    a(href=item.url) #{item.name}
-
-            else 
-                p This brand has no items.
-
-    hr
-    p 
-        a(href=brand.url+'/update') Update brand
-    p 
-        a(href=brand.url+'/delete') Delete brand
+    div.buttons   
+        a.btn(href=brand.url+'/update') 
+            p Update brand
+        a.btn(href=brand.url+'/delete') 
+            p Delete brand

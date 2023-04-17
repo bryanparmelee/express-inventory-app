@@ -26,7 +26,7 @@ exports.category_detail = (req, res, next) => {
         Category.findById(req.params.id).exec(callback);
       },
       category_items(callback) {
-        Item.find({ category: req.params.id }, "name").exec(callback);
+        Item.find({ category: req.params.id }, "name image").exec(callback);
       },
     },
     (err, results) => {

@@ -5,16 +5,18 @@ block content
 
     img(src=item.image alt='item.name')
 
-    p #[strong Brand:] 
-        a(href=item.brand.website target='blank') #{item.brand.name}
-    p #[strong Price:] $#{item.price}
-    p.description #[strong Description:] #{item.description}
-    p #[strong Category:] 
-        each val in item.category 
-            a(href=val.url) #{val.name}
+    div.item-details
 
-    hr
-    p 
-     a(href=item.url+'/delete') Delete Item 
-    p 
-        a(href=item.url+'/update') Update Item
+        p #[strong Brand:] 
+            a(href=item.brand.website target='blank') #{item.brand.name}
+        p #[strong Price:] $#{item.price}
+        p #[strong Description:] #{item.description}
+        p #[strong Category:] 
+            each val in item.category 
+                a(href=val.url) #{val.name}
+
+    div.buttons     
+        a.btn(href=item.url+'/delete') 
+            p Delete Item  
+        a.btn(href=item.url+'/update') 
+            p Update Item
