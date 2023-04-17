@@ -6,11 +6,11 @@ block content
 
     div.hero
       h1= title
-      p.description Welcome to #{title}, a Node.js CRUD app to help keep track of some of the musical gear that I dream of owning some day. 
+      p.description Welcome to My Gear Wishlist, a Node.js CRUD app to help keep track of some of the musical gear that I would love to acquire. 
 
       if error 
         p No gear found.
       else  
-        p The list currently contains !{data.item_count} items and !{data.brand_count} brands.
+        p The list currently contains <b>!{data.item_count}</b> items from <b>!{data.brand_count}</b> brands.
 
       a.btn(href='/catalog/items') See the gear

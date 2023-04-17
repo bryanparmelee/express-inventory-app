@@ -9,24 +9,32 @@ html(lang='en')
     link(href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    div(class='body-container')
-      div(class='sidebar')
-        ul(class='sidebar-nav')
-          li
-            a(href='/catalog') Home
-          li
-            a(href='/catalog/items') All gear
-          li
-            a(href='/catalog/categories') All categories
-          li
-            a(href='/catalog/brands') All brands 
-          hr
-          li 
-            a(href='/catalog/item/create') Add gear
-          li 
-            a(href='/catalog/category/create') Add category
-          li 
-            a(href='/catalog/brand/create') Add brand
+    div.body-container
+      div.sidebar
+        a.sidebar-link(href='/catalog')
+          ion-icon(name='home-outline')
+          p Home          
+        a.sidebar-link(href='/catalog/items') 
+          ion-icon(name='musical-notes-outline')
+          p All Gear
+        a.sidebar-link(href='/catalog/categories') 
+          ion-icon(name='musical-notes-outline')
+          p All Categories         
+        a.sidebar-link(href='/catalog/brands') 
+          ion-icon(name='musical-notes-outline')
+          p All Brands   
+        hr       
+        a.sidebar-link(href='/catalog/item/create') 
+          ion-icon(name='add-outline')
+          p Add Gear
+        a.sidebar-link(href='/catalog/category/create')
+          ion-icon(name='add-outline') 
+          p Add Category
+        a.sidebar-link(href='/catalog/brand/create')
+          ion-icon(name='add-outline')
+          p Add Brand
             
       div(class='main-container')
         block content
+    script(type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js")
+    script(nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js")

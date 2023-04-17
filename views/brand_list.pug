@@ -2,11 +2,11 @@ extends layout
 
 block content 
     h1= title 
-
-    ul 
+    img.section-img(src='/images/brands.jpg')
+    div.categories-container 
         each brand in brand_list 
-            li
-                a(href=brand.url) #{brand.name}
+            a.category-container(href=brand.url) 
+                p #{brand.name}
 
         else    
-            li No brands found 
+                p No brands found 
