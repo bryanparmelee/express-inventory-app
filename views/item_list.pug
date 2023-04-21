@@ -2,12 +2,12 @@ extends layout
 
 block content       
     h1= title
-    img.section-img(src='/images/gear.jpg')
+    //- img.section-img(src='/images/gear.jpg')
     div.items-container
         each item in item_list 
             a.item-container(href=item.url)
                 img(src=item.image alt=item.name) 
-                p #{item.name}
+                p.item-title #{item.name}
 
         else
             p There are no items 

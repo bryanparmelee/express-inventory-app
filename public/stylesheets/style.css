@@ -18,6 +18,7 @@ body {
   background: var(--main-bg);
   color: black;
   height: 100vh;
+  margin-bottom: 12px;
 }
 
 h1 {
@@ -201,22 +202,23 @@ a.btn {
 
 .items-container {
   border: 1px solid purple;
-  width: 100%;
+  padding: 8px;
+  max-width: 600px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   place-items: center;
 }
 
 .item-container {
-  width: 400px;
-  padding: 4px 40px;
+  width: 240px;
+  padding: 4px 12px;
   margin-bottom: 4px;
   display: flex;
   align-items: center;
   text-decoration: none;
   color: black;
   gap: 16px;
-  border-radius: 40px;
+  /* border-radius: 40px; */
 }
 
 .item-container:hover {
@@ -224,10 +226,15 @@ a.btn {
 }
 
 .item-container > img {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   background-position: center;
   object-fit: cover;
+}
+
+.item-title {
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .categories-container {

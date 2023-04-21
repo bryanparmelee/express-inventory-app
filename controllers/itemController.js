@@ -38,7 +38,7 @@ exports.item_list = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.render("item_list", { title: "Item List", item_list: list_items });
+      res.render("item_list", { title: "Gear List", item_list: list_items });
     });
 };
 
@@ -223,7 +223,7 @@ exports.item_update_get = (req, res, next) => {
         }
       }
       res.render("item_form", {
-        title: "Update Item",
+        title: "Edit Item",
         brands: results.brands,
         categories: results.categories,
         item: results.item,
@@ -283,7 +283,7 @@ exports.item_update_post = [
             }
           }
           res.render("item_form", {
-            title: "Update Item",
+            title: "Edit Item",
             brand: results.brand,
             categories: results.categories,
             item,
