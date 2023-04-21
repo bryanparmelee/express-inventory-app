@@ -48,7 +48,7 @@ exports.category_detail = (req, res, next) => {
 };
 
 exports.category_create_get = (req, res, next) => {
-  res.render("category_form", { title: "Create Genre" });
+  res.render("category_form", { title: "Create Category" });
 };
 
 exports.category_create_post = [

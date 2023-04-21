@@ -10,6 +10,7 @@
   --main-bg: #ffffff;
   --highlight: rgb(219, 219, 219);
   --alt-text-color: rgb(111, 111, 111);
+  --btn-link: aquamarine;
 }
 
 body {
@@ -32,6 +33,11 @@ a {
 
 img {
   max-width: 400px;
+}
+
+textarea {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
 }
 
 .body-container {
@@ -106,8 +112,8 @@ img {
 
 .form-container {
   border: 1px solid purple;
-  padding: 4px;
-  max-width: 400px;
+  padding: 4px 8px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -116,6 +122,12 @@ img {
 .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 12px;
+}
+
+label {
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .label-with-link {
@@ -124,9 +136,30 @@ img {
   /* margin-bottom: 4px; */
 }
 
+.label-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.label-link:hover {
+  background-color: var(--btn-link);
+}
+
 .form-control {
   padding: 4px;
   margin-top: 4px;
+}
+
+.checkboxes {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 8px;
+}
+
+.checkbox > label {
+  font-weight: 400;
 }
 
 .checkbox-input {
@@ -139,14 +172,26 @@ img {
   gap: 24px;
 }
 
+button {
+  border: none;
+  font-family: "Inter", sans-serif;
+}
+
 .btn {
   min-width: 140px;
+  padding: 8px 18px;
   border-radius: 20px;
   background-color: aquamarine;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-alt {
+  background-color: darkgrey;
 }
 
 a.btn {
-  padding: 8px 18px;
   display: flex;
   align-items: center;
   justify-content: center;

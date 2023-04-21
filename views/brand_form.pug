@@ -3,19 +3,19 @@ extends layout
 block content
     h1=title
 
-    form(method='POST' action='')
+    form.form-container(method='POST' action='')
         div.form-group
             label(for='brand_name') Name: 
             input#brand-name.form-control(type='text' placeholder='Brand name',name='brand_name' value=(undefined===brand ? '' : brand.name))
+        div.form-group
             label(for='brand_url') Website: 
             input#brand-url.form-control(type='text' placeholder='Brand website',name='brand_url' value=(undefined===brand ? '' : brand.website))
-        button.btn.btn-primary(type='submit') Submit
-    if brand === undefined 
-        p 
-            a(href='../brands') Cancel
-    if  brand !== undefined 
-        p 
-            a(href=brand.url) Cancel  
+        div.buttons
+            button.btn.btn-primary(type='submit') Submit
+            if brand === undefined 
+                a.btn.btn-alt(href='../brands') Cancel
+            if  brand !== undefined 
+                a.btn.btn-alt(href=brand.url) Cancel  
     if errors
         ul 
             for error in errors

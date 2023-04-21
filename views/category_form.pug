@@ -3,19 +3,19 @@ extends layout
 block content   
     h1 #{title}
 
-    form(method='POST' action='')
+    form.form-container(method='POST' action='')
         div.form-group
             label(for='name') Category: 
-            input#name.form-control(type='text', placeholder='Enter category name' name='name' value=(undefined===category ? '' : category.name))
+            input#name.form-control(type='text', placeholder='Category name' name='name' value=(undefined===category ? '' : category.name))
+        div.form-group
             label(for='description') Description: 
-            textarea#description.form-control(name='description', rows=5, placeholder='Enter category description' ) #{undefined===category ? '' : category.description}
-        button.btn.btn-primary(type='submit') Submit 
-    if category === undefined 
-          p 
-            a(href='../categories') Cancel  
-    if category !== undefined 
-        p 
-            a(href=category.url) Cancel  
+            textarea#description.form-control(name='description', rows=5, placeholder='Category description' ) #{undefined===category ? '' : category.description}
+        div.buttons
+            button.btn(type='submit') Submit 
+            if category === undefined 
+                a.btn.btn-alt(href='../categories') Cancel  
+            if category !== undefined 
+                a.btn.btn-alt(href=category.url) Cancel  
     if errors 
         ul  
             for error in errors 
