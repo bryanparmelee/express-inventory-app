@@ -37,7 +37,7 @@ a {
 }
 
 img {
-  max-width: 400px;
+  width: clamp(120px, 100%, 400px);
 }
 
 textarea {
@@ -49,20 +49,23 @@ textarea {
   width: 100vw;
   padding: 10px;
   display: flex;
-  border: 1px solid red;
+  position: relative;
+}
+
+.burger-menu {
+  display: none;
 }
 
 .sidebar {
-  width: 240px;
-  padding: 0 8px;
-  border: 1px solid blue;
+  width: 200px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background-color: white;
 }
 
 .sidebar-link {
-  border: 1px solid red;
   border-radius: 40px;
   padding: 8px 16px;
   text-decoration: none;
@@ -80,7 +83,6 @@ textarea {
   font-size: 1rem;
 }
 .main-container {
-  border: 1px solid green;
   width: 100%;
   padding: 0px 12px;
   display: flex;
@@ -91,7 +93,6 @@ textarea {
 }
 
 .home-container {
-  border: 1px solid purple;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -116,7 +117,6 @@ textarea {
 }
 
 .form-container {
-  border: 1px solid purple;
   padding: 4px 8px;
   width: 400px;
   display: flex;
@@ -219,7 +219,6 @@ a.btn {
 }
 
 .items-container {
-  border: 1px solid purple;
   padding: 8px;
   max-width: 600px;
   display: grid;
@@ -236,7 +235,6 @@ a.btn {
   text-decoration: none;
   color: black;
   gap: 16px;
-  /* border-radius: 40px; */
 }
 
 .item-container:hover {
@@ -266,7 +264,6 @@ a.btn {
 .category-container {
   width: 300px;
   padding: 16px;
-  border: 1px solid green;
   border-radius: 40px;
   display: flex;
   gap: 4px;
@@ -279,10 +276,34 @@ a.btn {
 }
 
 .section-img {
-  max-width: 400px;
+  width: clamp(120px, 100%, 400px);
 }
 
 .item-details {
   max-width: 400px;
   color: var(--alt-text-color);
+}
+
+@media screen and (max-width: 720px) {
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar.show {
+    display: flex;
+    z-index: 5;
+    position: absolute;
+    top: 10;
+    left: 0;
+  }
+
+  .burger-menu {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .items-container {
+    grid-template-columns: 1fr;
+  }
 }

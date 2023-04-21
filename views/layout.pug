@@ -10,31 +10,35 @@ html(lang='en')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     div.body-container
-      div.sidebar
-        a.sidebar-link(href='/catalog')
-          ion-icon(name='home-outline')
-          p Home          
-        a.sidebar-link(href='/catalog/items') 
-          ion-icon(name='musical-notes-outline')
-          p All Gear
-        a.sidebar-link(href='/catalog/categories') 
-          ion-icon(name='musical-notes-outline')
-          p All Categories         
-        a.sidebar-link(href='/catalog/brands') 
-          ion-icon(name='musical-notes-outline')
-          p All Brands   
-        hr       
-        a.sidebar-link(href='/catalog/item/create') 
-          ion-icon(name='add-outline')
-          p Add Gear
-        a.sidebar-link(href='/catalog/category/create')
-          ion-icon(name='add-outline') 
-          p Add Category
-        a.sidebar-link(href='/catalog/brand/create')
-          ion-icon(name='add-outline')
-          p Add Brand
+      nav
+        div.burger-menu
+          ion-icon(name='menu-outline' size='large')
+        div.sidebar
+          a.sidebar-link(href='/catalog')
+            ion-icon(name='home-outline')
+            p Home          
+          a.sidebar-link(href='/catalog/items') 
+            ion-icon(name='musical-notes-outline')
+            p All Gear
+          a.sidebar-link(href='/catalog/categories') 
+            ion-icon(name='musical-notes-outline')
+            p All Categories         
+          a.sidebar-link(href='/catalog/brands') 
+            ion-icon(name='musical-notes-outline')
+            p All Brands   
+          hr       
+          a.sidebar-link(href='/catalog/item/create') 
+            ion-icon(name='add-outline')
+            p Add Gear
+          a.sidebar-link(href='/catalog/category/create')
+            ion-icon(name='add-outline') 
+            p Add Category
+          a.sidebar-link(href='/catalog/brand/create')
+            ion-icon(name='add-outline')
+            p Add Brand
             
       div(class='main-container')
         block content
+    script(src='/javascripts/script.js')
     script(type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js")
     script(nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js")

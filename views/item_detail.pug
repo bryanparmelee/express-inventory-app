@@ -15,8 +15,9 @@ block content
             each val in item.category 
                 a(href=val.url) #{val.name}
 
-    div.buttons     
-        a.btn(href=item.url+'/delete') 
-            p Delete Item  
+    div.buttons 
         a.btn(href=item.url+'/update') 
-            p Update Item
+            p Update Item    
+        a.btn.btn-alt(href=item.url+'/delete') 
+            p Delete Item  
+       
