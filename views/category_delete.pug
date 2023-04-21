@@ -1,21 +1,21 @@
 extends layout 
 block content 
-    h1 #{title}: #{category.name}
+    h1 #{title}: 
+    h4 #{category.name}
 
     if category_items.length 
 
         p #[strong This category is being used by the following gear:]
+        
+        div.items-container
 
-        div(style='margin-left:20px;margin-top:20px')
-
-            h4 Gear 
-
-            dl 
             each item in category_items 
-                dt 
-                    a(href=item.url) #{item.name}
 
-        p #[em Please delete the item or change its category.]
+                a.item-container(href=item.url) 
+                    img(src=item.image alt=item.name)
+                    p.item-title #{item.name}
+
+        p #[em Please delete the item(s) or change its category.]
 
     else 
         p Do you really want to delete this category?
@@ -23,8 +23,6 @@ block content
         form(method='POST' action='')
             div.form-group
                 input#categoryid.form-control(type='hidden' name='categoryid',required='true', value=category._id )
-
-            button.btn.btn-primary(type='submit') Delete 
-
-        p 
-            a(href=category.url) Cancel
+            div.buttons
+                button.btn.btn-primary(type='submit') Delete 
+                a.btn.btn-alt(href=category.url) Cancel

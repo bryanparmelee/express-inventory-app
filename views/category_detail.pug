@@ -5,19 +5,19 @@ block content
     h1 #{category.name}
     p.description #{category.description}
 
-    h4 Items 
-    div.items-container             
-        each item in category_items 
-            a.item-container(href=item.url)
-                img(src=item.image alt=item.name)
-                p #{item.name}
+    if category_items.length > 0
+        div.items-container             
+            each item in category_items 
+                a.item-container(href=item.url)
+                    img(src=item.image alt=item.name)
+                    p.item-title #{item.name}
 
-        else 
-            p This category has no items.
+    else 
+        p This category has no gear.
 
     div.buttons 
         a.btn(href=category.url+'/update')
             p Update category
      
-        a.btn(href=category.url+'/delete')
+        a.btn.btn-alt(href=category.url+'/delete')
             p Delete category

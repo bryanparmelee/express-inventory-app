@@ -2,10 +2,10 @@ extends layout
 
 block content 
     h1= title
-    img.secction-img(src='/images/categories.jpg')
-    div.categories-container  
+    img.section-img(src='/images/categories.jpg')
+    div.items-container 
         each category in category_list
-            a.category-container(href=category.url) 
+            a.item-container(href=category.url) 
                 ion-icon(name='musical-note-outline')
                 p #{category.name}
 

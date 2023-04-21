@@ -1,21 +1,22 @@
 extends layout 
 
 block content 
-    h1 #{title}:  #{brand.name}
+    h1 #{title}
+
+    h4 #{brand.name}
     
     if brand_items.length 
 
-        p #[strong Please delete the following gear before deleting this brand.]
+        p #[strong This brand currently has the following gear in the wishlist.]
 
-        div(style='margin-left:20px;margin-top:20px')
+        div.items-container
 
-            h4 Gear 
-
-            dl 
             each item in brand_items 
-                dt 
-                    a(href=item.url) #{item.name}
-                dd #{item.description}
+       
+                a.item-container(href=item.url) 
+                    img(src=item.image alt=item.name)
+                    p.item-title #{item.name}
+        p #[em You must delete this gear before deleting this brand.]
 
     else    
         p Do you really want to delete this brand?
@@ -24,7 +25,6 @@ block content
             div.form-group
                 input#brandid.form-control(type='hidden',name='brandid',required='true', value=brand._id )
 
-            button.btn.btn-primary(type='submit') Delete
-
-        p   
-            a(href=brand.url) Cancel
+            div.buttons
+                button.btn.btn-primary(type='submit') Delete  
+                a.btn.btn-alt(href=brand.url) Cancel
