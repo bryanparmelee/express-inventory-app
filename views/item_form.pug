@@ -20,7 +20,7 @@ block content
                         option(value=brand._id) #{brand.name}
         div.form-group
             label(for='description') Description: 
-            textarea#description.form-control(type='textarea', placeholder='Item description' name='description' required='true') #{undefined===item ? '' : item.description} 
+            textarea#description.form-control(type='textarea', placeholder='Item description' rows=5 name='description' required='true') #{undefined===item ? '' : item.description} 
         div.form-group
             label(for='price') Price: 
             input#price.form-control(type='text', placeholder='Item price' name='price' required='true' value=(undefined===item ? '' : item.price) )
