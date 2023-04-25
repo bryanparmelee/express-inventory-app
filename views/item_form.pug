@@ -3,7 +3,7 @@ extends layout
 block content 
     h1= title 
 
-    form.form-container(method='POST' action='')
+    form.form-container(method='POST' action='' enctype='multipart/form-data')
         div.form-group
             label(for='name') Name:
             input#name.form-control(type='text', placeholder='Item name' name='name' required='true' value=(undefined===item ? '' : item.name) )
@@ -35,7 +35,7 @@ block content
                         label(for=category._id)  #{category.name}
         div.form-group
             label Image: 
-            input#image.form-control(type='text', placeholder='Enter image URL', name='image' value=(undefined===item ? '' : item.image) )
+            input#image.form-control(type='file', name='image')
         div.buttons
             button.btn.btn-primary(type='submit') Submit
     

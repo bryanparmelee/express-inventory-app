@@ -3,7 +3,7 @@ extends layout
 block content 
     h1 #{item.name}
 
-    img(src=item.image alt='item.name')
+    img(src='/uploads/'+item.image alt=item.name)
 
     div.item-details
 

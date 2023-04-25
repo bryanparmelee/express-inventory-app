@@ -1,6 +1,8 @@
 const Item = require("../models/item");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
+const multer = require("multer");
+const upload = multer({ dest: "public/uploads/" });
 
 const { body, validationResult } = require("express-validator");
 
@@ -93,6 +95,7 @@ exports.item_create_get = (req, res, next) => {
 };
 
 exports.item_create_post = [
+  upload.single("image"),
   (req, res, next) => {
     if (!Array.isArray(req.body.category)) {
       req.body.category =
@@ -108,7 +111,7 @@ exports.item_create_post = [
   body("brand", "Brand name is required.").trim().isLength({ min: 1 }).escape(),
   body("category.*").escape(),
   body("price", "Item price required.").trim().isLength({ min: 1 }),
-  body("image").trim().isURL(),
+  // body("image").trim().isURL(),
 
   (req, res, next) => {
     const errors = validationResult(req);
@@ -119,7 +122,7 @@ exports.item_create_post = [
       brand: req.body.brand,
       category: req.body.category,
       price: req.body.price,
-      image: req.body.image,
+      image: req.file.filename,
     });
 
     if (!errors.isEmpty()) {
@@ -233,6 +236,7 @@ exports.item_update_get = (req, res, next) => {
 };
 
 exports.item_update_post = [
+  upload.single("image"),
   (req, res, next) => {
     if (!Array.isArray(req.body.category)) {
       req.body.category =
@@ -248,7 +252,7 @@ exports.item_update_post = [
   body("brand", "Brand name is required.").trim().isLength({ min: 1 }).escape(),
   body("category.*").escape(),
   body("price", "Item price required.").trim().isLength({ min: 1 }),
-  body("image").trim().isURL(),
+  // body("image").trim().isURL(),
   (req, res, next) => {
     const errors = validationResult(req);
 
@@ -259,7 +263,7 @@ exports.item_update_post = [
       category:
         typeof req.body.category === "undefined" ? [] : req.body.category,
       price: req.body.price,
-      image: req.body.image,
+      image: req.file.filename,
       _id: req.params.id,
     });
 
