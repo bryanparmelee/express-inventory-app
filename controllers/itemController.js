@@ -122,7 +122,7 @@ exports.item_create_post = [
       brand: req.body.brand,
       category: req.body.category,
       price: req.body.price,
-      image: req.file.filename,
+      image: req.file.filemane,
     });
 
     if (!errors.isEmpty()) {

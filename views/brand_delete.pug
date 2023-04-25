@@ -14,7 +14,10 @@ block content
             each item in brand_items 
        
                 a.item-container(href=item.url) 
-                    img(src=item.image alt=item.name)
+                    if item.image === undefined 
+                        img(src='/images/item-default.jpg' alt=item.name)
+                    else
+                        img(src='/uploads/'+item.image alt=item.name) 
                     p.item-title #{item.name}
         p #[em You must delete this gear before deleting this brand.]
 

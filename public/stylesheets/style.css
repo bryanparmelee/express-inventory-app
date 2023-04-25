@@ -80,7 +80,7 @@ textarea {
 }
 
 .sidebar-link > p {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 .main-container {
   width: 100%;
@@ -113,11 +113,7 @@ textarea {
 }
 
 .description {
-  max-width: 400px;
   color: var(--alt-text-color);
-  font-weight: 500;
-  font-size: 1.2rem;
-  text-align: center;
 }
 
 .form-container {
@@ -250,6 +246,12 @@ a.btn {
   height: 40px;
   background-position: center;
   object-fit: cover;
+}
+
+.item-container > p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--alt-text-color);
 }
 
 .item-title {

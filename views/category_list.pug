@@ -6,7 +6,6 @@ block content
     div.items-container 
         each category in category_list
             a.item-container(href=category.url) 
-                ion-icon(name='musical-note-outline')
                 p #{category.name}
 
         else 

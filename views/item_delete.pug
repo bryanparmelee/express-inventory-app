@@ -5,11 +5,16 @@ block content
 
     p Do you really want to delete this item?
 
+    if item.image === undefined 
+        img(src='/images/item-default.jpg' alt=item.name)
+    else
+        img(src='/uploads/'+item.image alt=item.name)
+
     p #[strong Brand:] #{item.brand.name}
     p #[strong Price:] #{item.price}
     p #[strong Description:] #{item.description}
     p #[strong Category:] #{item.category.name}
-    p #[strong Image:] #{item.image}
+
 
     form(method='POST', action='')
         div.form-group

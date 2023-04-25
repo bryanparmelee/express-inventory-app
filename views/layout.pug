@@ -7,6 +7,8 @@ html(lang='en')
     link(rel="preconnect" href="https://fonts.googleapis.com")
     link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
     link(href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     div.body-container
@@ -15,30 +17,28 @@ html(lang='en')
           ion-icon(name='menu-outline' size='large')
         div.sidebar
           a.sidebar-link(href='/catalog')
-            ion-icon(name='home-outline')
+            span(class="material-icons md-18") home
             p Home          
           a.sidebar-link(href='/catalog/items') 
-            ion-icon(name='musical-notes-outline')
+            span(class="material-icons md-18") music_note
             p All Gear
           a.sidebar-link(href='/catalog/categories') 
-            ion-icon(name='musical-notes-outline')
+            span(class="material-icons md-18") music_note
             p All Categories         
           a.sidebar-link(href='/catalog/brands') 
-            ion-icon(name='musical-notes-outline')
+            span(class="material-icons md-18") music_note
             p All Brands   
           hr       
           a.sidebar-link(href='/catalog/item/create') 
-            ion-icon(name='add-outline')
+            span(class="material-icons md-18") add
             p Add Gear
           a.sidebar-link(href='/catalog/category/create')
-            ion-icon(name='add-outline') 
+            span(class="material-icons md-18") add
             p Add Category
           a.sidebar-link(href='/catalog/brand/create')
-            ion-icon(name='add-outline')
+            span(class="material-icons md-18") add
             p Add Brand
             
       div(class='main-container')
         block content
     script(src='/javascripts/script.js')
-    script(type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js")
-    script(nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js")

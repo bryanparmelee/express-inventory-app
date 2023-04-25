@@ -8,12 +8,15 @@ block content
  
     if brand_items.length > 0
         h4 Gear:
-            div.items-container
+        div.items-container
         
-                each item in brand_items 
-                    a.item-container(href=item.url)
-                        img(src=item.image alt=item.name) 
-                        p.item-title #{item.name}
+            each item in brand_items 
+                a.item-container(href=item.url)
+                    if item.image === undefined 
+                        img(src='/images/item-default.jpg' alt=item.name)
+                    else
+                        img(src='/uploads/'+item.image alt=item.name) 
+                    p.item-title #{item.name}
 
     else 
         p This brand currently has no gear in the wishlist.
