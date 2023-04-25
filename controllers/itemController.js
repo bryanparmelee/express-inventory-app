@@ -116,14 +116,17 @@ exports.item_create_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
-    const item = new Item({
+    let item = new Item({
       name: req.body.name,
       description: req.body.description,
       brand: req.body.brand,
       category: req.body.category,
       price: req.body.price,
-      image: req.file.filemane,
     });
+
+    if (req.file !== undefined) {
+      item.image = req.file.filename;
+    }
 
     if (!errors.isEmpty()) {
       async.parallel(
@@ -256,16 +259,19 @@ exports.item_update_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
-    const item = new Item({
+    let item = new Item({
       name: req.body.name,
       description: req.body.description,
       brand: req.body.brand,
       category:
         typeof req.body.category === "undefined" ? [] : req.body.category,
       price: req.body.price,
-      image: req.file.filename,
       _id: req.params.id,
     });
+
+    if (req.file !== undefined) {
+      item.image = req.file.filename;
+    }
 
     if (!errors.isEmpty()) {
       async.parallel(
