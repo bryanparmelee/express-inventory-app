@@ -2,7 +2,10 @@ const Item = require("../models/item");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
 const multer = require("multer");
-const upload = multer({ dest: "public/uploads/" });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "public/uploads/"),
+});
+const upload = multer({ storage: storage, limits: { fileSize: 1048576 } });
 
 const { body, validationResult } = require("express-validator");
 
