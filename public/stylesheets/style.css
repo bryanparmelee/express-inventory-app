@@ -309,6 +309,7 @@ a.btn {
 
   .burger-menu {
     display: block;
+    cursor: pointer;
   }
 }
 
