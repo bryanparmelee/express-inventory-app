@@ -130,6 +130,11 @@ textarea {
   margin-bottom: 12px;
 }
 
+.form-group > p {
+  font-size: 0.7rem;
+  color: var(--alt-text-color);
+}
+
 label {
   font-size: 0.8rem;
   font-weight: 600;
