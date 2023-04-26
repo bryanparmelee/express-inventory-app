@@ -162,7 +162,7 @@ exports.brand_update_get = (req, res, next) => {
       return next(err);
     }
     res.render("brand_form", {
-      title: "Update Brand",
+      title: "Edit Brand",
       brand: brand,
     });
   });
@@ -185,7 +185,7 @@ exports.brand_update_post = [
 
     if (!errors.isEmpty()) {
       res.render("brand_form", {
-        title: "Create Brand",
+        title: "Edit Brand",
         brand: brand,
         errors: errors.array(),
       });

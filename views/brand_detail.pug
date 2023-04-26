@@ -3,7 +3,7 @@ extends layout
 block content   
     h1 #{brand.name}
     a.brand-link(href=brand.website target='blank')
-        ion-icon(name='globe-outline')
+        span(class="material-icons md-18") public
         p Visit #{brand.name} online
  
     if brand_items.length > 0
@@ -22,6 +22,6 @@ block content
         p This brand currently has no gear in the wishlist.
     div.buttons   
         a.btn(href=brand.url+'/update') 
-            p Update brand
+            p Edit brand
         a.btn.btn-alt(href=brand.url+'/delete') 
             p Delete brand

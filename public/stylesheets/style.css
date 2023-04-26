@@ -215,6 +215,9 @@ a.btn {
 
 .brand-link:hover {
   background-color: var(--highlight);
+}
+
+.brand-link:hover > p {
   text-decoration: underline;
 }
 

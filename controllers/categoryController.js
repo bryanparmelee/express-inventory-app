@@ -161,7 +161,7 @@ exports.category_update_get = (req, res, next) => {
       return next(err);
     }
     res.render("category_form", {
-      title: "Update Category",
+      title: "Edit Category",
       category: category,
     });
   });
@@ -184,7 +184,7 @@ exports.category_update_post = [
 
     if (!errors.isEmpty()) {
       res.render("category_form", {
-        title: "Update Category",
+        title: "Edit Category",
         category: category,
         errors: errors.array(),
       });
