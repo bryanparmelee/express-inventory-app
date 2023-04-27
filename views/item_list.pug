@@ -7,9 +7,9 @@ block content
         each item in item_list 
             a.item-container(href=item.url)
                 if item.image === undefined
-                    img(crossorigin="anonymous" src='/images/item-default.jpg')
+                    img(src='/images/item-default.jpg')
                 else
-                    img(src=item.image alt=item.name) 
+                    img(crossorigin="anonymous" src=item.image alt=item.name) 
                 p.item-title #{item.name}
 
         else
