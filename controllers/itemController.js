@@ -1,11 +1,21 @@
 const Item = require("../models/item");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
+const firebase = require("firebase-admin");
+const { initializeApp } = require("firebase/app");
+const {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} = require("firebase/storage");
+const config = require("../utils/config");
+const db = initializeApp(config.firebaseConfig);
 const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "public/uploads/"),
+const storage = getStorage();
+const upload = multer({
+  storage: multer.memoryStorage(),
 });
-const upload = multer({ storage: storage, limits: { fileSize: 1048576 } });
 
 const { body, validationResult } = require("express-validator");
 
@@ -114,61 +124,74 @@ exports.item_create_post = [
   body("brand", "Brand name is required.").trim().isLength({ min: 1 }).escape(),
   body("category.*").escape(),
   body("price", "Item price required.").trim().isLength({ min: 1 }),
-  // body("image").trim().isURL(),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
 
-    let item = new Item({
-      name: req.body.name,
-      description: req.body.description,
-      brand: req.body.brand,
-      category: req.body.category,
-      price: req.body.price,
-    });
+      let item = new Item({
+        name: req.body.name,
+        description: req.body.description,
+        brand: req.body.brand,
+        category: req.body.category,
+        price: req.body.price,
+      });
 
-    if (req.file !== undefined) {
-      item.image = req.file.filename;
-    }
-
-    if (!errors.isEmpty()) {
-      async.parallel(
-        {
-          brands(callback) {
-            Brand.find(callback);
-          },
-          categories(callback) {
-            Category.find(callback);
-          },
-        },
-        (err, results) => {
-          if (err) {
-            return next(err);
-          }
-
-          for (const category of results.categories) {
-            if (item.category.includes(category._id)) {
-              category.checked = "true";
-            }
-          }
-          res.render("item_form", {
-            title: "Create Item",
-            brands: results.brands,
-            categories: results.categories,
-            item,
-            errors: errors.array(),
-          });
-        }
-      );
-      return;
-    }
-
-    item.save((err) => {
-      if (err) {
-        return next(err);
+      if (req.file !== undefined) {
+        const storageRef = ref(storage, `${req.body.name}`);
+        const metadata = {
+          contentType: req.file.mimetype,
+        };
+        const snapshot = await uploadBytesResumable(
+          storageRef,
+          req.file.buffer,
+          metadata
+        );
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        item.image = downloadURL;
       }
-      res.redirect(item.url);
-    });
+
+      if (!errors.isEmpty()) {
+        async.parallel(
+          {
+            brands(callback) {
+              Brand.find(callback);
+            },
+            categories(callback) {
+              Category.find(callback);
+            },
+          },
+          (err, results) => {
+            if (err) {
+              return next(err);
+            }
+
+            for (const category of results.categories) {
+              if (item.category.includes(category._id)) {
+                category.checked = "true";
+              }
+            }
+            res.render("item_form", {
+              title: "Create Item",
+              brands: results.brands,
+              categories: results.categories,
+              item,
+              errors: errors.array(),
+            });
+          }
+        );
+        return;
+      }
+
+      item.save((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect(item.url);
+      });
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
   },
 ];
 
@@ -258,60 +281,74 @@ exports.item_update_post = [
   body("brand", "Brand name is required.").trim().isLength({ min: 1 }).escape(),
   body("category.*").escape(),
   body("price", "Item price required.").trim().isLength({ min: 1 }),
-  // body("image").trim().isURL(),
-  (req, res, next) => {
-    const errors = validationResult(req);
 
-    let item = new Item({
-      name: req.body.name,
-      description: req.body.description,
-      brand: req.body.brand,
-      category:
-        typeof req.body.category === "undefined" ? [] : req.body.category,
-      price: req.body.price,
-      _id: req.params.id,
-    });
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
 
-    if (req.file !== undefined) {
-      item.image = req.file.filename;
-    }
+      let item = new Item({
+        name: req.body.name,
+        description: req.body.description,
+        brand: req.body.brand,
+        category:
+          typeof req.body.category === "undefined" ? [] : req.body.category,
+        price: req.body.price,
+        _id: req.params.id,
+      });
 
-    if (!errors.isEmpty()) {
-      async.parallel(
-        {
-          brand(callback) {
-            Brand.find(callback);
-          },
-          categories(callback) {
-            Category.find(callback);
-          },
-        },
-        (err, results) => {
-          if (err) {
-            return next(err);
-          }
-          for (const category of results.categories) {
-            if (item.category.includes(category._id)) {
-              category.checked = "true";
-            }
-          }
-          res.render("item_form", {
-            title: "Edit Item",
-            brand: results.brand,
-            categories: results.categories,
-            item,
-            errors: errors.array(),
-          });
-        }
-      );
-      return;
-    }
-
-    Item.findByIdAndUpdate(req.params.id, item, {}, (err, theitem) => {
-      if (err) {
-        return next(err);
+      if (req.file !== undefined) {
+        const storageRef = ref(storage, `${req.body.name}`);
+        const metadata = {
+          contentType: req.file.mimetype,
+        };
+        const snapshot = await uploadBytesResumable(
+          storageRef,
+          req.file.buffer,
+          metadata
+        );
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        item.image = downloadURL;
       }
-      res.redirect(theitem.url);
-    });
+
+      if (!errors.isEmpty()) {
+        async.parallel(
+          {
+            brand(callback) {
+              Brand.find(callback);
+            },
+            categories(callback) {
+              Category.find(callback);
+            },
+          },
+          (err, results) => {
+            if (err) {
+              return next(err);
+            }
+            for (const category of results.categories) {
+              if (item.category.includes(category._id)) {
+                category.checked = "true";
+              }
+            }
+            res.render("item_form", {
+              title: "Edit Item",
+              brand: results.brand,
+              categories: results.categories,
+              item,
+              errors: errors.array(),
+            });
+          }
+        );
+        return;
+      }
+
+      Item.findByIdAndUpdate(req.params.id, item, {}, (err, theitem) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect(theitem.url);
+      });
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
   },
 ];

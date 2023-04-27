@@ -9,7 +9,7 @@ block content
                 if item.image === undefined
                     img(src='/images/item-default.jpg')
                 else
-                    img(src='/uploads/'+item.image alt=item.name) 
+                    img(src=item.image alt=item.name) 
                 p.item-title #{item.name}
 
         else

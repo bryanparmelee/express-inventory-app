@@ -6,7 +6,7 @@ block content
     if item.image === undefined 
         img(src='/images/item-default.jpg' alt=item.name)
     else
-        img(src='/uploads/'+item.image alt=item.name)
+        img(src=item.image alt=item.name)
 
     div.item-details
 

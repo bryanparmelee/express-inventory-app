@@ -15,7 +15,7 @@ block content
                     if item.image === undefined 
                         img(src='/images/item-default.jpg' alt=item.name)
                     else
-                        img(src='/uploads/'+item.image alt=item.name)
+                        img(src=item.image alt=item.name)
                     p.item-title #{item.name}
 
         p #[em Please delete the item(s) or change its category.]
