@@ -1,7 +1,6 @@
 const Item = require("../models/item");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
-const firebase = require("firebase-admin");
 const { initializeApp } = require("firebase/app");
 const {
   getStorage,

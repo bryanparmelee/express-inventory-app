@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const brand_controller = require("../controllers/brandController");
-const category_controller = require("../controllers/categoryController.js");
+const category_controller = require("../controllers/categoryController");
 const item_controller = require("../controllers/itemController");
+const user_controller = require("../controllers/userController");
 
 router.get("/", item_controller.index);
 
@@ -33,5 +34,8 @@ router.get("/category/:id/update", category_controller.category_update_get);
 router.post("/category/:id/update", category_controller.category_update_post);
 router.get("/category/:id", category_controller.category_detail);
 router.get("/categories", category_controller.category_list);
+
+router.get("/signup", user_controller.user_create_get);
+router.post("/signup", user_controller.user_create_post);
 
 module.exports = router;

@@ -1,0 +1,21 @@
+extends layout 
+
+block content 
+    h1=title 
+
+    form.form-container(method='POST' action='')
+        div.form-group 
+            label(for='email') Email: 
+            input#email.form-control(type='email' placeholder='Email', name='email' value=(undefined===user ? '' : user.email))
+        div.form-group 
+            label(for='password') Password:
+            input(type='password' placeholder='Password' name='password' value=(undefined===user ? '' : user.password))
+        div.form-group 
+            label(for='confirm_password') Confirm password:
+            input(type='password' placeholder='Confirm password' name='confirm_password' value='')
+        button.btn.btn-primary(type='submit') Sign Up 
+
+    if errors 
+        ul 
+            for error in errors     
+                li!= error.msg
